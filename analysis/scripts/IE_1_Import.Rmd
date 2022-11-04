@@ -2,7 +2,13 @@
 title: "Initial experiment - sensor recording"
 author: "João Marreiros & Lisa Schunk"
 date: "`r Sys.Date()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -35,19 +41,13 @@ The knit directory for this script is the project directory.
 
 ---
 
-
 # Load packages
-```{r}
-library(ggplot2)
-library(readr)
-library(reshape2)
-library(ggpubr)
-library(magrittr)
-library(wesanderson)
-library(tools)
-library(chron)
+```{r Libraries}
+pack_to_load <- c("tools", "chron", "ggplot2", "readr", "reshape2", "ggpubr", "magrittr", "wesanderson")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
+
 
 ---
 
@@ -60,12 +60,6 @@ info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in,
 
 ```
 
-
-The checksum (MD5 hashes) of the imported files are:  
-```{r, echo = FALSE}
-info_in
-
-```
 
 
 # Read in original data
@@ -83,7 +77,7 @@ velocity <- read_table2(data_file[5])
 
 # Organise the data 
 ```{r}
-# fills empty fields
+# fill empty fields
 
 # force
 data_force <- as.data.frame(force)
@@ -108,6 +102,7 @@ data_velocity[is.na(data_velocity)] <- 0
 data_velocity <- melt(data_velocity, id = "steps")
 
 ```
+
 
 # Plot the data 
 ```{r}
@@ -173,6 +168,13 @@ sessionInfo()
 ```
 
 RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
+
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 
 ---
